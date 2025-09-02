@@ -40,7 +40,10 @@ public class AuthService {
                 )
         );
 
-        return userRepository.findByEmail(input.getEmail())
+        User user = userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
+
+        System.out.println(user.toString());
+        return user;
     }
 }

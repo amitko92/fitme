@@ -24,7 +24,9 @@ public class User implements UserDetails {
     }
 
     public User(String username, String email, String password) {
+
         this.id = -1L;
+
         this.username = username;
         this.email = email;
         this.password = password;
@@ -88,4 +90,13 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

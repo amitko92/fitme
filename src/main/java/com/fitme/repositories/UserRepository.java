@@ -24,4 +24,9 @@ public class UserRepository {
         users.add(user);
         return user;
     }
+
+    public List<User> findAll() {
+
+        return new ArrayList<>(users);
+    }
 }

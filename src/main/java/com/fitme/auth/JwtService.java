@@ -39,6 +39,7 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        System.out.println("userDetails: " + userDetails.toString());
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
@@ -51,6 +52,8 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+
+        System.out.println("in buildToken, userDetails.getUsername(): " + userDetails.getUsername());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -76,7 +79,7 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts
-                .parser()
+                .parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
