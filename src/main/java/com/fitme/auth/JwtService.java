@@ -1,5 +1,6 @@
 package com.fitme.auth;
 
+import com.fitme.configs.JwtAuthenticationFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
+    Logger logger = LoggerFactory.getLogger(JwtService.class);
+
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
@@ -26,11 +31,18 @@ public class JwtService {
     private long jwtExpiration;
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        logger.info("token: {}", token);
+
+        String result = extractClaim(token, Claims::getSubject);
+
+        logger.info("result: {}", result);
+        return result;
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
+
+        logger.info("claims: {}", claims);
         return claimsResolver.apply(claims);
     }
 
@@ -53,7 +65,6 @@ public class JwtService {
             long expiration
     ) {
 
-        System.out.println("in buildToken, userDetails.getUsername(): " + userDetails.getUsername());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
